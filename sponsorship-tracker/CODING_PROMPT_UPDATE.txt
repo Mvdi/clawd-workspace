@@ -1,0 +1,1 @@
+Update: CODING_PROMPT.md is now at /root/clawd/sponsorship-tracker/CODING_PROMPT.md (project root). Please re-read it and continue.
