@@ -1,53 +1,118 @@
 #!/bin/bash
-# Proactive Task Suggestions
-# Kører hver dag kl 09:00 DK tid (08:00 UTC)
-# Formål: Giv Mathias konkrete forslag til hvad han kan arbejde på baseret på context
-
-echo "🎯 Analyzing recent work and suggesting tasks..."
+# Task Suggestions - Analyser dine todos og forslår næste skridt
 
 DATE=$(date +%Y-%m-%d)
-SUGGESTIONS_FILE="/root/clawd/suggestions/${DATE}.md"
+OUTPUT_FILE="/root/clawd/suggestions/${DATE}.md"
+TODOS_FILE="/root/clawd/dashboard/data/personal-todos.json"
 
 mkdir -p /root/clawd/suggestions
 
-# Læs recent memory
-TODAYS_MEMORY="/root/clawd/memory/$(date +%Y-%m-%d).md"
-YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)
-YESTERDAYS_MEMORY="/root/clawd/memory/${YESTERDAY}.md"
+echo "# Task Suggestions - $DATE" > "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+echo "Generated: $(date)" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
 
-cat << EOF > "$SUGGESTIONS_FILE"
-# Task Suggestions - $DATE
+# Analyser dine todos
+echo "## 📋 Dine Todos (Prioriterede Udfordringer)" >> "$OUTPUT_FILE"
+node -e "
+    const fs = require('fs');
+    const data = JSON.parse(fs.readFileSync('$TODOS_FILE', 'utf8'));
+    const todos = data.mathias || [];
+    const unfinished = todos.filter(t => !t.completed);
+    
+    const highPriority = unfinished.filter(t => t.priority === 'høj' || t.priority === 'high');
+    
+    if (highPriority.length === 0) {
+        console.log('✅ Ingen høj-prioritet udfordringer! Godt arbejde!');
+    } else {
+        highPriority.sort((a, b) => new Date(a.created) - new Date(b.created));
+        console.log('### Top ' + Math.min(5, highPriority.length) + ' Høj-Prioritet Udfordringer:');
+        highPriority.slice(0, 5).forEach(t => {
+            const timeAgo = Math.floor((Date.now() - new Date(t.created)) / 60000);
+            let timeStr = timeAgo + ' timer siden';
+            if (timeAgo > 24) timeStr = Math.floor(timeAgo / 24) + ' dage siden';
+            
+            console.log('');
+            console.log('- ' + t.text);
+            console.log('  Prioritet: ' + t.priority);
+            console.log('  Oprettet: ' + timeStr);
+            console.log('  ID: ' + t.id);
+            console.log('  Forslag: Fokus på denne i dag!');
+        });
+    }
+" >> "$OUTPUT_FILE"
 
-## 🎯 Based on Recent Conversations:
+echo "" >> "$OUTPUT_FILE"
 
-### High Priority (from yesterday/today):
-$(if [ -f "$TODAYS_MEMORY" ]; then
-    grep -E "TODO|IMPORTANT|SKAL|prioritet|vigtig" "$TODAYS_MEMORY" | head -5 || echo "No explicit todos found."
-else
-    echo "No memory file for today yet."
-fi)
+# Analyse af tasks
+echo "## 🔄 Dashboard Tasks (Igangværende)" >> "$OUTPUT_FILE"
+node -e "
+    const fs = require('fs');
+    const data = JSON.parse(fs.readFileSync('$TODOS_FILE', 'utf8'));
+    const tasks = data.todo || [];
+    const inProgress = tasks.filter(t => t.status === 'in-progress');
+    
+    if (inProgress.length === 0) {
+        console.log('✅ Ingen igangværende opgaver!');
+    } else {
+        const stale = inProgress.filter(t => {
+            const hoursOld = (Date.now() - new Date(t.created)) / 3600000;
+            return hoursOld > 24;
+        });
+        
+        console.log('### Igangværende Opgaver (' + inProgress.length + '):');
+        inProgress.slice(0, 3).forEach(t => {
+            const created = new Date(t.created).toLocaleDateString('da-DK');
+            console.log('');
+            console.log('- ' + t.title);
+            console.log('  Oprettet: ' + created);
+            console.log('  Status: ' + t.status);
+            console.log('  Forslag: Afslut denne eller prioriter videre');
+        });
+        
+        if (stale.length > 0) {
+            console.log('');
+            console.log('### Stående Opgaver (>24t):');
+            stale.forEach(t => {
+                const created = new Date(t.created).toLocaleDateString('da-DK');
+                const hoursOld = Math.floor((Date.now() - new Date(t.created)) / 3600000);
+                console.log('');
+                console.log('- ' + t.title);
+                console.log('  Gammel: ' + hoursOld + ' timer');
+                console.log('  Forslag: Skal du prioriterer denne?');
+            });
+        }
+    }
+" >> "$OUTPUT_FILE"
 
-### Projects in Progress:
-$(if [ -f "$YESTERDAYS_MEMORY" ]; then
-    grep -E "projekt|build|udvikl|koder" "$YESTERDAYS_MEMORY" | head -3 || echo "No active projects found."
-else
-    echo "No memory file for yesterday."
-fi)
+echo "" >> "$OUTPUT_FILE"
+echo "## 🎯 Næste Skridt Forslag (Prioriteret)" >> "$OUTPUT_FILE"
+node -e "
+    const fs = require('fs');
+    const todosData = JSON.parse(fs.readFileSync('$TODOS_FILE', 'utf8'));
+    const todos = todosData.mathias || [];
+    const unfinished = todos.filter(t => !t.completed);
+    const highPriority = unfinished.filter(t => t.priority === 'høj' || t.priority === 'high');
+    const sortedByDate = highPriority.sort((a, b) => new Date(a.created) - new Date(b.created));
+    const top3 = sortedByDate.slice(0, 3);
 
-## 💡 New Ideas Based on Trends:
-- [Auto-filled from AI research]
+    console.log('### Høj Prioritet (fokus på disse i dag):');
+    top3.forEach((t, i) => {
+        console.log((i + 1) + '. ' + t.text);
+    });
 
-## 🧠 What We Should Learn:
-- [Auto-filled based on trending topics]
+    if (unfinished.length === 0) {
+        console.log('');
+        console.log('### 💡 Alternative Forslag:');
+        console.log('1. Test JueFlow - Kør: /jf:quick \"Byg en demo todo app\"');
+        console.log('2. Start rigtigt projekt - Har du en projektidé til JueFlow?');
+        console.log('3. Workflow Automator - Tjek om du har 14 høj tasks klar til næste iteration');
+    }
+" >> "$OUTPUT_FILE"
 
-## 🔥 Quick Wins (under 30 min):
-- Review recent memory and update MEMORY.md
-- Clean up workspace
-- Check for new skills/tools to install
+echo "" >> "$OUTPUT_FILE"
+echo "---" >> "$OUTPUT_FILE"
+echo "Generated by Jue 🧙‍♂️" >> "$OUTPUT_FILE"
 
----
-
-Generated by Jue 🧙‍♂️
-EOF
-
-echo "✅ Task suggestions generated. Will send to Telegram."
+echo "✅ Task suggestions genereret med dine todos!"
+echo "📝 Output: $OUTPUT_FILE"
