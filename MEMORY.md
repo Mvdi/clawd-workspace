@@ -126,12 +126,98 @@
 ## Todo / At Remember
 
 - [x] MEMORY.md oprettet (2026-01-27)
-- [x] Avancerede automations sat op (se nedenfor)
+- [x] GitHub repo oprettet (Mvdi/clawd-workspace)
+- [x] Avancerede automations sat up (se nedenfor)
+- [x] Competitive Intelligence implementeret (Tue/Fri 11:00 DK)
+- [x] Trend-Based Ideas implementeret (Sat 10:00 DK)
+- [x] Weekly Learnings implementeret (Sun 21:00 DK)
+- [x] JueFlow oprettet og gjort til skill!
 - [ ] Faktisk læse X/Twitter for AI coding pains (kræver browser-use API key)
 - [ ] Lære Mathias' patterns og præferencer bedre
-- [ ] Få Mathias' GitHub username så vi kan setup integrationer
 - [ ] Spørge hvilke services han bruger (Notion, Slack, Calendar, osv.)
-- [ ] Installer flere skills via ClawdHub når CLI virker igen (dependency issue: undici)
+- [ ] Installer flere skills via ClawdHub når CLI virker igen (server errors på API)
+- [ ] Test JueFlow med et rigtigt projekt
+
+---
+
+## JueFlow System (2026-01-27)
+
+**Automated Reliable Workflows for Clawdbot - Inspired by Get Shit Done**
+
+**📁 Location:** `/root/clawd/skills/jueflow/` - Nu en officiel skill!
+
+**🧠 Auto-Triggering:** Jue kan automatisk bruge JueFlow når han ser:
+- Projekt-initiering behov
+- Kompleks features der skal planlægges
+- Overnight builds (når jeg skal arbejde autonomt)
+- Behov for pålidelig kvalitet
+
+**Trigger patterns:**
+- "start [project|app|tool]"
+- "build [feature|functionality]"
+- "execute [phase|task]" overnight
+- "plan [something] out"
+- "make [something] production-ready"
+
+**Når JueFlow triggeres:** Automatisk:
+1. Lancerer full workflow (new project, plan, execute, verify)
+2. Spawner parallelle agenter med frisk context
+3. Laver atomic commits
+4. Verificerer mod måle
+
+**Manuelt trigger:** Mathias kan også bede:
+- "Use JueFlow to start a new project for X"
+- "Use JueFlow for a quick task: fix bug"
+
+### What It Does
+- **Fresh context windows per task** - No degradation, consistent quality
+- **Multi-agent orchestration** - Parallel researchers, atomic executors
+- **State tracking** - PROJECT.md, STATE.md, REQUIREMENTS.md, ROADMAP.md
+- **Atomic git commits** - Surgical, traceable, meaningful
+- **Verification before completion** - Goals checked against codebase
+
+### Core Workflow
+1. `/jf:new-project` - Initialize with questions → research → requirements → roadmap
+2. `/jf:discuss-phase N` - Shape implementation decisions
+3. `/jf:plan-phase N` - Create atomic task plans with XML
+4. `/jf:execute-phase N` - Build autonomously with fresh context
+5. `/jf:verify-work N` - Confirm it works with UAT
+6. `/jf:quick "task"` - Ad-hoc tasks with atomic guarantees
+
+### Agent System
+- **Project Researcher** - Surveys domain ecosystem, writes research/
+- **Phase Researcher** - Deep dive into specific phase implementation
+- **Planner** - Creates atomic task plans with XML structure
+- **Executor** - Implements tasks, each with fresh 200k context
+- **Verifier** - Confirms code delivers what was promised
+- **Debugger** - Diagnoses failures systematically
+
+### Files Created
+```
+.planning/
+├── PROJECT.md           # Project vision, always loaded
+├── STATE.md            # Decisions, blockers, position
+├── REQUIREMENTS.md     # Scoped v1/v2 requirements
+├── ROADMAP.md          # Phases, milestones, progress
+├── research/           # Ecosystem research
+│   ├── SUMMARY.md
+│   ├── STACK.md
+│   ├── FEATURES.md
+│   ├── ARCHITECTURE.md
+│   └── PITFALLS.md
+└── phases/             # Phase-specific files
+    ├── phaseN-CONTEXT.md
+    ├── phaseN-RESEARCH.md
+    ├── phaseN-{wave}-PLAN.md
+    └── phaseN-{wave}-SUMMARY.md
+```
+
+### Location
+- `/root/clawd/JueFlow/` - All JueFlow files
+- `/root/clawd/JueFlow/README.md` - Full documentation
+
+### Key Principle
+**Walk away, come back done** - Run `/jf:execute-phase` overnight, wake up to verified work with clean git history.
 
 ---
 

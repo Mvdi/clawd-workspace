@@ -1,5 +1,14 @@
 {
-  "mathias": [],
+  "mathias": [
+    {
+      "id": 1769502379480,
+      "text": "Lave automations",
+      "priority": "medium",
+      "completed": false,
+      "created": "2026-01-27T08:26:19.480Z",
+      "completedAt": null
+    }
+  ],
   "sigrid": [
     {
       "id": 1769463435569,
