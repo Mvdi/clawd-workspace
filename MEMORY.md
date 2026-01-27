@@ -90,7 +90,8 @@
 
 ## Hvad Mathias Bruger
 
-- **GitHub:** Har ikke oprettet repo endnu
+- **GitHub:** Mvdi ✅ HAR CLI (gh) - authenticated med full repo rights - SPØRG IKKE IGEN!
+- **Git:** Bruger HTTPS med gh token - IKKE SSH (ikke nødvendigt)
 - **Telegram:** Main channel (dafvadr)
 - **Notion:** Ukendt om han bruger
 - **Slack:** Ukendt om han bruger
@@ -111,6 +112,7 @@
 - Generiske, overfladiske forslag
 - Glemme hvad vi talte om i tidligere sessions
 - At være passiv og kun vente på instructions
+- **Spørge om det samme flere gange** - hvis Mathias har svaret, så HUSK det!
 
 ### Hvad Han Leder Efter
 - **Reel værdi** - ikke bare "nice to have"
