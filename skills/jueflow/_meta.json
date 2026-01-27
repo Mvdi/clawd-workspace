@@ -1,0 +1,46 @@
+{
+  "name": "jueflow",
+  "description": "Automated reliable workflows - multi-agent orchestration, fresh context windows, atomic commits",
+  "version": "1.0.0",
+  "author": "Jue",
+  "category": "productivity",
+  "keywords": [
+    "workflow",
+    "automation",
+    "multi-agent",
+    "project-management",
+    "development"
+  ],
+  "capabilities": [
+    "multi-agent-orchestration",
+    "fresh-context-windows",
+    "atomic-commits",
+    "project-research",
+    "task-planning",
+    "autonomous-execution",
+    "verification"
+  ],
+  "triggers": [
+    "start new project",
+    "build autonomously",
+    "plan complex feature",
+    "execute overnight",
+    "reliable quality"
+  ],
+  "integrations": [
+    "git",
+    "web-search",
+    "bash",
+    "sessions-spawn"
+  ],
+  "requires": {
+    "bins": ["git"],
+    "tools": ["Read", "Write", "Bash", "WebSearch", "sessions_spawn"]
+  },
+  "usage_examples": [
+    "Use JueFlow to start a new project for building X",
+    "Use JueFlow to execute phase 1",
+    "Use JueFlow for a quick task: fix login bug",
+    "Show JueFlow progress"
+  ]
+}
