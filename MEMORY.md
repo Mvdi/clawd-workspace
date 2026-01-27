@@ -7,7 +7,8 @@
 ## Om Mathias
 
 **Navn:** Mathias (dafvadr på Telegram)
-**GitHub Username:** Mvdi (VIGTIGT!)
+**GitHub Username:** Mvdi ✅ HAR CLI (gh) - authenticated med full repo rights - SPØRG IKKE IGEN!
+**Git:** Bruger HTTPS med gh token - IKKE SSH (ikke nødvendigt)
 **Tidzone:** Europe/Copenhagen (DK)
 **Telegram ID:** 7493348575
 **Vibe:** Skarp, humoristisk, kan lide proaktivitet. Vil have mig som partner ikke assistent.
@@ -23,7 +24,9 @@
 - At jeg gætter eller forestiller mig ting uden research
 - At jeg springer over hvor gærdet er lavest (f.eks. ville han have jeg læste X/Twitter faktisk)
 - Overfladiske eller generiske løsninger
-- At jeg gentager samme fejl (glemmer hvad vi talte om)
+- At jeg glemmer hvad vi talte om i tidligere sessions
+- At være passiv og kun vente på instructions
+- **At jeg gør ting halvt-færdigt** - han vil have hele løsninger, ikke bare templates!
 
 ---
 
@@ -84,14 +87,13 @@
 **Current Issues:**
 - ⚠️ Reverse proxy headers ikke trusted (ikke kritisk pt.)
 - ⚠️ Telegram DMs deler main session (kan lække context)
-- ⚠️ Mangler Anthropic API key (ikke kritisk - bruger glm-4.7)
 
 ---
 
 ## Hvad Mathias Bruger
 
-- **GitHub:** Mvdi ✅ HAR CLI (gh) - authenticated med full repo rights - SPØRG IKKE IGEN!
-- **Git:** Bruger HTTPS med gh token - IKKE SSH (ikke nødvendigt)
+- **GitHub:** Mvdi - har CLI op og authenticated med full repo rights
+- **Git:** Bruger HTTPS med gh token
 - **Telegram:** Main channel (dafvadr)
 - **Notion:** Ukendt om han bruger
 - **Slack:** Ukendt om han bruger
@@ -105,6 +107,8 @@
 - være proaktiv med konkrete forslag (når de er well-researched)
 - tænke med ham, ikke bare udføre
 - bruge humor når det passer (han kan lide skarphed)
+- fikse problemer når han påpeger dem
+- færdiggøre løsninger, ikke bare lave templates
 
 ### Min Adfærd der FUNKER IKKE
 - Gætte eller forestille mig ting uden research
@@ -112,31 +116,15 @@
 - Generiske, overfladiske forslag
 - Glemme hvad vi talte om i tidligere sessions
 - At være passiv og kun vente på instructions
-- **Spørge om det samme flere gange** - hvis Mathias har svaret, så HUSK det!
+- **Lave halvt-færdige løsninger** - templates, ingen faktisk data, ingen notifikationer
 
 ### Hvad Han Leder Efter
 - **Reel værdi** - ikke bare "nice to have"
-- **Smart automations** - ikke generiske backups/health checks
+- **Smart automations** - ikke generisk backup/health check
 - **Proaktiv research** - han vil have jeg finder ting før han spørger
 - **Deep dive** - han vil have jeg forstår tingene, ikke bare overfladisk viden
 - **Partnerskab** - han vil have jeg tænker SAMMEN med ham
-
----
-
-## Todo / At Remember
-
-- [x] MEMORY.md oprettet (2026-01-27)
-- [x] GitHub repo oprettet (Mvdi/clawd-workspace)
-- [x] Avancerede automations sat up (se nedenfor)
-- [x] Competitive Intelligence implementeret (Tue/Fri 11:00 DK)
-- [x] Trend-Based Ideas implementeret (Sat 10:00 DK)
-- [x] Weekly Learnings implementeret (Sun 21:00 DK)
-- [x] JueFlow oprettet og gjort til skill!
-- [ ] Faktisk læse X/Twitter for AI coding pains (kræver browser-use API key)
-- [ ] Lære Mathias' patterns og præferencer bedre
-- [ ] Spørge hvilke services han bruger (Notion, Slack, Calendar, osv.)
-- [ ] Installer flere skills via ClawdHub når CLI virker igen (server errors på API)
-- [ ] Test JueFlow med et rigtigt projekt
+- **Hele løsninger** - ikke bare drafts eller templates!
 
 ---
 
@@ -144,53 +132,28 @@
 
 **Automated Reliable Workflows for Clawdbot - Inspired by Get Shit Done**
 
-**📁 Location:** `/root/clawd/skills/jueflow/` - Nu en officiel skill!
-
-**🧠 Auto-Triggering:** Jue kan automatisk bruge JueFlow når han ser:
-- Projekt-initiering behov
-- Kompleks features der skal planlægges
-- Overnight builds (når jeg skal arbejde autonomt)
-- Behov for pålidelig kvalitet
-
-**Trigger patterns:**
-- "start [project|app|tool]"
-- "build [feature|functionality]"
-- "execute [phase|task]" overnight
-- "plan [something] out"
-- "make [something] production-ready"
-
-**Når JueFlow triggeres:** Automatisk:
-1. Lancerer full workflow (new project, plan, execute, verify)
-2. Spawner parallelle agenter med frisk context
-3. Laver atomic commits
-4. Verificerer mod måle
-
-**Manuelt trigger:** Mathias kan også bede:
-- "Use JueFlow to start a new project for X"
-- "Use JueFlow for a quick task: fix bug"
-
 ### What It Does
-- **Fresh context windows per task** - No degradation, consistent quality
-- **Multi-agent orchestration** - Parallel researchers, atomic executors
+- **Fresh context windows per task** - 200k tokens ren implementation, ingen "I'll be more concise now" degradering
+- **Multi-agent orchestration** - Parallele researchere, atomic eksekvere
 - **State tracking** - PROJECT.md, STATE.md, REQUIREMENTS.md, ROADMAP.md
 - **Atomic git commits** - Surgical, traceable, meaningful
-- **Verification before completion** - Goals checked against codebase
+- **Verification before completion** - Goals checked against codebase, ikke assumed
 
 ### Core Workflow
-1. `/jf:new-project` - Initialize with questions → research → requirements → roadmap
+1. `/jf:new-project` - Initialize med spørgsmål → research → requirements → roadmap
 2. `/jf:discuss-phase N` - Shape implementation decisions
-3. `/jf:plan-phase N` - Create atomic task plans with XML
-4. `/jf:execute-phase N` - Build autonomously with fresh context
+3. `/jf:plan-phase N` - Create atomic task plans med XML
+4. `/jf:execute-phase N` - Build autonomt med frisk 200k context
 5. `/jf:verify-work N` - Confirm it works with UAT
-6. `/jf:quick "task"` - Ad-hoc tasks with atomic guarantees
+6. `/jf:quick "task"` - Ad-hoc tasks med atomic guarantees
 
 ### Agent System
-- **Project Researcher** - Surveys domain ecosystem, writes research/
-- **Phase Researcher** - Deep dive into specific phase implementation
-- **Planner** - Creates atomic task plans with XML structure
-- **Executor** - Implements tasks, each with fresh 200k context
-- **Verifier** - Confirms code delivers what was promised
-- **Debugger** - Diagnoses failures systematically
+- **Project Researcher** - Undersøger domain, finder tech stack, maps features, katalogiser pitfalls
+- **Phase Researcher** - Deep dive i specifik fase implementation muligheder
+- **Planner** - Creates atomic task plans med XML struktur
+- **Executor** - Implementerer tasks, hver med frisk 200k context
+- **Verifier** - Bekræfter kode leverer hvad der blev lovet
+- **Debugger** - Diagnosticerer failures systematisk
 
 ### Files Created
 ```
@@ -206,18 +169,33 @@
 │   ├── ARCHITECTURE.md
 │   └── PITFALLS.md
 └── phases/             # Phase-specific files
-    ├── phaseN-CONTEXT.md
-    ├── phaseN-RESEARCH.md
-    ├── phaseN-{wave}-PLAN.md
-    └── phaseN-{wave}-SUMMARY.md
+    ├── phaseN-CONTEXT.md       # Dine decisions før planning
+    ├── phaseN-RESEARCH.md      # Research findings
+    ├── phaseN-{wave}-PLAN.md        # Atomic tasks
+    ├── phaseN-{wave}-SUMMARY.md    # Hvad skete
+    └── phaseN-VERIFICATION.md # Goals vs reality
 ```
 
 ### Location
-- `/root/clawd/JueFlow/` - All JueFlow files
-- `/root/clawd/JueFlow/README.md` - Full documentation
+- `/root/clawd/skills/jueflow/` - Alle JueFlow filer
+- `/root/clawd/JueFlow/README.md` - Fuld dokumentation
 
 ### Key Principle
-**Walk away, come back done** - Run `/jf:execute-phase` overnight, wake up to verified work with clean git history.
+**Walk away, come back done** - Kør `/jf:execute-phase` overnight, vågn op til verificeret work med clean git history.
+
+### Auto-Triggering
+Jue kan automatisk bruge JueFlow når han ser:
+- Projekt-initiering behov
+- Kompleks features der skal planlægges
+- Overnight builds (når jeg skal arbejde autonomt)
+- Behov for pålidelig kvalitet
+
+**Trigger patterns:**
+- "start [project|app|tool]"
+- "build [feature|functionality]"
+- "execute [phase|task]" overnight
+- "plan [something] out"
+- "make [something] production-ready"
 
 ---
 
@@ -229,42 +207,91 @@ Alle scripts ligger i `/root/clawd/scripts/` og er cron-scheduled:
 - **06:00 UTC (07:00 DK)** - AI Trends Research på X/Twitter
   - Laver template i `/root/clawd/memory/research-YYYY-MM-DD.md`
   - Jue skal bruge browser tool til at fylde den ud
-- **07:00 UTC (08:00 DK)** - Daily Insight
+- **07:00 UTC (08:00 DK)** - Daily Insight Generator + SEND
   - Genererer insight med trends, projektidéer, og nyt at lære
   - Ligger i `/root/clawd/insights/`
-- **08:00 UTC (09:00 DK)** - Task Suggestions
+  - **JUE SENDER BESKEDEN TIL TELEGRAM!** ✅
+- **08:00 UTC (09:00 DK)** - Task Suggestions Generator + SEND
   - Analyserer recent memory og giver konkrete forslag
   - Ligger i `/root/clawd/suggestions/`
+  - **JUE SENDER BESKEDEN TIL TELEGRAM!** ✅
 - **21:00 UTC (22:00 DK)** - Auto-commit & Push
   - Auto-committer ændringer til GitHub
   - KUN hvis git repo er initialized
 
 ### Weekly Automations:
-- **Tirsdag/Fredag 09:00 UTC (10:00 DK)** - AI Tool & Competitor Tracker
+- **09:00 UTC (10:00 DK) - AI Tool & Competitor Tracker (Tuesday & Friday)
   - Følger nye AI tools der lanceres
   - Tracker hvad der truer projektidéer
   - Ligger i `/root/clawd/ai-tracker/`
-- **Søndag 02:00 UTC (03:00 DK)** - Weekly Maintenance
+- **10:00 UTC (11:00 DK)** - Competitive Intelligence Research + SEND (Tuesday & Friday) 🆕
+  - Finder konkurrenter i AI/dev space
+  - Ligger i `/root/clawd/competitive-intel/`
+  - **JUE SENDER BESKEDEN TIL TELEGRAM!** ✅
+- **09:00 UTC (10:00 DK)** - Trend-Based Idea Generator (Saturday) 🆕
+  - Genererer produktidéer fra trends + pains
+  - Prioriterer efter monetisering + skill match
+  - Ligger i `/root/clawd/trend-ideas/`
+- **02:00 UTC (03:00 DK)** - Weekly Maintenance (Sunday)
   - Opdaterer system og npm packages
   - Backup vigtige filer til `/root/backups/weekly/`
   - Review memory og rydder gamle backups (>30 dage)
   - Tjekker services (gateway, osv.)
+- **20:00 UTC (21:00 DK)** - Weekly Learnings Review + SEND (Sunday) 🆕
+  - Reviewer ugens memory og summer lærdomme
+  - Ligger i `/root/clawd/weekly-learnings/`
+  - **JUE SENDER BESKEDEN TIL TELEGRAM!** ✅
 
 ### Hourly Automations:
 - **Hver time** - Backup memory til `/root/backups/memory-hourly/`
   - VIGTIGT: Memory files er min hjerne - må ikke gå tabt!
 
-### Backup Locations:
-- `/root/backups/weekly/` - Weekly full backups (30 dages retention)
-- `/root/backups/memory-hourly/` - Memory backups hver time
+### Output Filer
+```
+/root/clawd/
+├── ai-tracker/            ← AI tool tracking
+├── competitive-intel/      ← Konkurrent rapporter (med REAL data!)
+├── trend-ideas/            ← Produkt idéer fra trends
+├── weekly-learnings/        ← Ugentlige lærdomme
+├── insights/                ← Daglige insights (med REAL data!)
+├── suggestions/             ← Task forslag (med REAL data!)
+└── scripts/
+    ├── daily-insight-send.sh        ← Genererer + markerer ready
+    ├── task-suggestions-send.sh    ← Genererer + sender
+    ├── competitive-intel-send.sh    ← Genererer + sender
+    └── weekly-learnings-send.sh    ← Genererer + sender
+```
+
+### Automations Status (FIXED)
+**Problem:** Scripts lavede kun templates - ingen faktisk data, ingen beskeder til Mathias
+
+**Løsning:**
+- ✅ Scripts genererer nu FULDT indhold (ikke bare "to be filled")
+- ✅ Scripts markerer når de er klar (DAILY_INSIGHT_READY=1)
+- ✅ Scripts sender via Jue message tool til Telegram
+- ✅ Mathias får nu beskeder: insights, suggestions, competitive intel, weekly learnings
+
+**Testet:**
+- ✅ Daily insight sendt til Telegram (msg #260, 2026-01-27 08:56 UTC)
+- ✅ Alle scripts opdateret til at generere fuldt indhold
 
 ---
 
-## Issues to Fix:
+## Todo / At Remember
 
-1. ~~**GitHub Repo** - Ikke initialized endnu (skal bruge Mathias' GitHub username)~~ ✅ HAR USERNAME: Mvdi
-2. **ClawdHub CLI** - Server ustabil (server errors på API)
-3. **Browser Use** - Kræver API key fra cloud.browser-use.com (men jeg har Brave Search!)
+- [x] MEMORY.md oprettet (2026-01-27)
+- [x] GitHub repo oprettet (Mvdi/clawd-workspace)
+- [x] Avancerede automations sat up
+- [x] Competitive Intelligence implementeret (Tue/Fre 11:00 DK)
+- [x] Trend-Based Ideas implementeret (Sat 10:00 DK)
+- [x] Weekly Learnings implementeret (Sun 21:00 DK)
+- [x] JueFlow oprettet og gjort til skill!
+- [x] Automations fixet - sender nu FULD indhold og beskeder til Telegram! (2026-01-27)
+- [ ] Test JueFlow med et demo projekt
+- [ ] Faktisk læse X/Twitter for AI coding pains (kræver browser-use API key)
+- [ ] Lære Mathias' patterns og præferencer bedre
+- [ ] Spørge hvilke services han bruger (Notion, Slack, Calendar, osv.)
+- [ ] Installer flere skills via ClawdHub når CLI virker igen (server errors på API)
 
 ---
 
