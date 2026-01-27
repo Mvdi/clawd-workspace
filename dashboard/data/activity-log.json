@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "message": "Test af Python updater",
+    "timestamp": "2026-01-26T18:08:49Z"
+  },
+  {
+    "id": 2,
+    "message": "Test af Python updater",
+    "timestamp": "2026-01-26T18:08:57Z"
+  },
+  {
+    "id": 3,
+    "message": "🔄 Opgave 1 flyttet fra archived til todo",
+    "timestamp": "2026-01-26T18:09:00Z"
+  },
+  {
+    "id": 4,
+    "message": "🔄 Opgave 1 flyttet fra todo til done",
+    "timestamp": "2026-01-26T18:09:05Z"
+  },
+  {
+    "id": 4,
+    "message": "📦 Arkiverede gamle opgaver (> 24 timer) til 'archived'",
+    "timestamp": "2026-01-26T18:09:09Z"
+  },
+  {
+    "id": 5,
+    "message": "📋 Mathias: Test opgave der skal beholdes (todo)",
+    "timestamp": "2026-01-26T18:10:05Z"
+  },
+  {
+    "id": 6,
+    "message": "⚡ Jue: Opdater dashboard systemet (in-progress)",
+    "timestamp": "2026-01-26T18:10:20Z"
+  },
+  {
+    "id": 7,
+    "message": "📋 Mathias: Test opgave der skal beholdes (todo)",
+    "timestamp": "2026-01-26T18:10:42Z"
+  },
+  {
+    "id": 8,
+    "message": "⚡ Jue: Opdater dashboard systemet (in-progress)",
+    "timestamp": "2026-01-26T18:10:45Z"
+  },
+  {
+    "id": 9,
+    "message": "✅ Jue: Gammel test opgave (done)",
+    "timestamp": "2026-01-26T18:11:10Z"
+  },
+  {
+    "id": 10,
+    "message": "🗑️ Slettede 1 gamle færdige opgaver (> 24 timer)",
+    "timestamp": "2026-01-26T18:11:22Z"
+  },
+  {
+    "id": 11,
+    "message": "📖 Færdig med dansk brugerguide til dashboard - workflow og task management",
+    "timestamp": "2026-01-26T18:15:01Z"
+  },
+  {
+    "id": 12,
+    "message": "✅ Ændrede navn fra 'Jue' til 'Snug' (på anmodning af Mathias)",
+    "timestamp": "2026-01-26T18:39:33Z"
+  },
+  {
+    "id": 12,
+    "message": "🚀 Opsatte workflow for idé-generering og produktudvikling",
+    "timestamp": "2026-01-26T19:18:46Z"
+  },
+  {
+    "id": 12,
+    "message": "📚 Todo: Product Hunt, r/SaaS, Twitter scanning aktiviteter",
+    "timestamp": "2026-01-26T19:19:09Z"
+  },
+  {
+    "id": 12,
+    "message": "🔍 In-Progress: Undersøger VibeCoder konkurrenter og differentieringsmuligheder",
+    "timestamp": "2026-01-26T19:19:28Z"
+  },
+  {
+    "id": 12,
+    "message": "🔍 Fundet 4 SaaS idéer baseret på pain analysis: Workflow Automator, AI Documentation Agent, Mid-Tier Code Assistant, Content AI Agent",
+    "timestamp": "2026-01-26T19:24:49Z"
+  },
+  {
+    "id": 12,
+    "message": "🚀 Starter arbejde på MVP: Workflow Automator (prioritet: høj)",
+    "timestamp": "2026-01-26T19:24:52Z"
+  },
+  {
+    "id": 12,
+    "message": "🧩 Starter coding-agent (Codex) for at bygge Workflow Automator MVP",
+    "timestamp": "2026-01-26T19:29:58Z"
+  },
+  {
+    "id": 12,
+    "message": "🧩 Pi coding agent kører (session: quick-mist) - bygger Workflow Automator MVP",
+    "timestamp": "2026-01-26T19:31:21Z"
+  },
+  {
+    "id": 12,
+    "message": "⚠️ Stoppede Pi agent - først skal vi analysere og vælge idé baseret på proper evidence",
+    "timestamp": "2026-01-26T19:35:40Z"
+  },
+  {
+    "id": 12,
+    "message": "📊 Færdig med detaljeret idé-analyse: 4 SaaS muligheder med pain, evidence, market size, competition, risks",
+    "timestamp": "2026-01-26T19:36:52Z"
+  },
+  {
+    "id": 12,
+    "message": "🧩 Pi coding agent kører (session: oceanic-otter) - bygger komplet Workflow Automator MVP",
+    "timestamp": "2026-01-26T19:39:45Z"
+  },
+  {
+    "id": 12,
+    "message": "⚠️ Temp dir er 81 MB - vil rydde op og push til GitHub når færdig",
+    "timestamp": "2026-01-26T19:43:36Z"
+  },
+  {
+    "id": 12,
+    "message": "📱 Plan: Når færdig → Flyt + GitHub push + Telegram besked til @dafvadr",
+    "timestamp": "2026-01-26T19:45:06Z"
+  },
+  {
+    "id": 12,
+    "message": "🧩 Pi agent restartet (session: calm-basil) - fortsætter Workflow Automator MVP",
+    "timestamp": "2026-01-26T19:57:07Z"
+  },
+  {
+    "id": 12,
+    "message": "✅ Installeret 7 high-priority skills: github, conventional-commits, deploy-agent, browser-use, exa, vercel, frontend-design",
+    "timestamp": "2026-01-26T20:20:19Z"
+  },
+  {
+    "id": 12,
+    "message": "🧩 OpenCode genstartet (session: salty-forest) - bygger WorkflowDashboard og PricingPage",
+    "timestamp": "2026-01-26T20:20:53Z"
+  },
+  {
+    "id": 12,
+    "message": "✅ WorkflowDashboard.tsx oprettet (grid view, search, filter, create button)",
+    "timestamp": "2026-01-26T20:23:44Z"
+  },
+  {
+    "id": 12,
+    "message": "✅ PricingPage.tsx oprettet (3 tiers, /usr/bin/bash//9, feature comparison, FAQ)",
+    "timestamp": "2026-01-26T20:23:47Z"
+  },
+  {
+    "id": 12,
+    "message": "⚠️ Frontend npm workspace-fejl (EUNSUPPORTEDPROTOCOL) - GitHub auth mangler",
+    "timestamp": "2026-01-26T20:26:32Z"
+  },
+  {
+    "id": 12,
+    "message": "✅ WORKFLOW AUTOMATOR MVP FÆRDIG!",
+    "timestamp": "2026-01-26T20:33:58Z"
+  }
+]

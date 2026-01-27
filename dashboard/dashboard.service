@@ -1,0 +1,14 @@
+[Unit]
+Description=Jue & Mathias Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/clawd/dashboard
+ExecStart=/usr/bin/node /root/clawd/dashboard/server.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

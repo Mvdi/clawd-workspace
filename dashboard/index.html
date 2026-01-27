@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jue & Mathias Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: #a1a1aa;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .header .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .header .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .header .stat i {
+            font-size: 1.1rem;
+        }
+
+        .header .stat.todo i { color: #f59e0b; }
+        .header .stat.in-progress i { color: #3b82f6; }
+        .header .stat.done i { color: #10b981; }
+        .header .stat.jue i { color: #667eea; }
+        .header .stat.mathias i { color: #f093fb; }
+        .header .stat.sigrid i { color: #22d3ee; }
+
+        .last-updated {
+            color: #71717a;
+            font-size: 0.8rem;
+            margin-top: 15px;
+        }
+
+        /* Main sections */
+        .section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+        }
+
+        /* Personal todos grid */
+        .personal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 1200px) {
+            .personal-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .personal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .personal-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .personal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .personal-card.jue {
+            border-left: 4px solid #667eea;
+        }
+
+        .personal-card.mathias {
+            border-left: 4px solid #f093fb;
+        }
+
+        .personal-card.sigrid {
+            border-left: 4px solid #22d3ee;
+        }
+
+        .personal-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .personal-card-header i {
+            font-size: 1.8rem;
+        }
+
+        .personal-card.jue .personal-card-header i { color: #667eea; }
+        .personal-card.mathias .personal-card-header i { color: #f093fb; }
+        .personal-card.sigrid .personal-card-header i { color: #22d3ee; }
+
+        .personal-card-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .personal-card-header .count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .todo-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .todo-input input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #e4e4e7;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .todo-input input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .todo-input input::placeholder {
+            color: #71717a;
+        }
+
+        .todo-input button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .todo-input button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .todo-input button:active {
+            transform: scale(0.98);
+        }
+
+        .personal-card.mathias .todo-input button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .personal-card.sigrid .todo-input button {
+            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+        }
+
+        .personal-todos {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .personal-todo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .personal-todo:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .personal-todo.completed {
+            opacity: 0.6;
+        }
+
+        .personal-todo.completed .todo-text {
+            text-decoration: line-through;
+            color: #71717a;
+        }
+
+        .personal-todo .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .personal-todo.completed .checkbox {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+
+        .personal-todo .checkbox i {
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .personal-todo .todo-text {
+            flex: 1;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .personal-todo .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            color: #ef4444;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            opacity: 0;
+        }
+
+        .personal-todo:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .personal-todo .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #52525b;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* Project board */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .column {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .column:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid;
+        }
+
+        .todo .column-header { border-color: #f59e0b; }
+        .in-progress .column-header { border-color: #3b82f6; }
+        .done .column-header { border-color: #10b981; }
+
+        .column-header i {
+            font-size: 1.3rem;
+        }
+
+        .todo .column-header i { color: #f59e0b; }
+        .in-progress .column-header i { color: #3b82f6; }
+        .done .column-header i { color: #10b981; }
+
+        .column-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .column-header .count {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 80px;
+        }
+
+        .task {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border-left: 3px solid;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(3px);
+        }
+
+        .task .title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .task .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: #71717a;
+        }
+
+        .task .assignee {
+            color: #a1a1aa;
+        }
+
+        .task .priority {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .task .priority.høj {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .task .priority.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .task .priority.lav {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .task .time {
+            color: #71717a;
+        }
+
+        .todo .task { border-color: #f59e0b; }
+        .in-progress .task { border-color: #3b82f6; }
+        .done .task { border-color: #10b981; opacity: 0.65; }
+
+        /* Activity log */
+        .activity-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .activity-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-section h3 i {
+            color: #667eea;
+        }
+
+        .activity-log {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .activity-time {
+            color: #71717a;
+            font-size: 0.75rem;
+            min-width: 75px;
+            font-weight: 500;
+        }
+
+        .activity-content {
+            flex: 1;
+            color: #a1a1aa;
+        }
+
+        .activity-content strong {
+            color: #d4d4d8;
+            font-weight: 600;
+        }
+
+        /* Guide section */
+        .guide-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .guide-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .guide-section h3 i {
+            color: #f093fb;
+        }
+
+        .guide-content {
+            line-height: 1.7;
+            color: #a1a1aa;
+        }
+
+        .guide-content p {
+            margin-bottom: 12px;
+        }
+
+        .guide-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #e4e4e7;
+        }
+
+        .guide-content ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .guide-content li {
+            margin-bottom: 6px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .header .stats {
+                gap: 15px;
+            }
+
+            .personal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-magic"></i> Jue & Mathias Dashboard</h1>
+            <p>Din personlige AI-assistent & projektstyring</p>
+            <div class="stats" id="headerStats"></div>
+            <div class="last-updated" id="lastUpdated"></div>
+            <a href="/workflows.html" style="margin-top: 15px; display: inline-block; background: rgba(102, 126, 234, 0.1); padding: 10px 20px; border-radius: 10px; color: #667eea; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: 1px solid rgba(102, 126, 234, 0.2);">
+                <i class="fas fa-bolt"></i> Workflow Automator
+            </a>
+        </div>
+
+        <!-- Personal Todos Section -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-user-circle"></i>
+                <span>Personlige Opgaver</span>
+            </div>
+            <div class="personal-grid">
+                <!-- Jue's Todos -->
+                <div class="personal-card jue">
+                    <div class="personal-card-header">
+                        <i class="fas fa-robot"></i>
+                        <h2>Jue's Opgaver</h2>
+                        <span class="count" id="jueCount">0</span>
+                    </div>
+                    <div class="todo-input">
+                        <input type="text" id="jueInput" placeholder="Hvad skal jeg lave for dig?">
+                        <button onclick="addPersonalTodo('jue')"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="personal-todos" id="jueTodos"></div>
+                </div>
+
+                <!-- Mathias's Todos -->
+                <div class="personal-card mathias">
+                    <div class="personal-card-header">
+                        <i class="fas fa-user"></i>
+                        <h2>Mathias' Huskeliste</h2>
+                        <span class="count" id="mathiasCount">0</span>
+                    </div>
+                    <div class="todo-input">
+                        <input type="text" id="mathiasInput" placeholder="Husk du skal...">
+                        <button onclick="addPersonalTodo('mathias')"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="personal-todos" id="mathiasTodos"></div>
+                </div>
+
+                <!-- Sigrid's Todos -->
+                <div class="personal-card sigrid">
+                    <div class="personal-card-header">
+                        <i class="fas fa-user-tie"></i>
+                        <h2>Sigrid's Huskeliste</h2>
+                        <span class="count" id="sigridCount">0</span>
+                    </div>
+                    <div class="todo-input">
+                        <input type="text" id="sigridInput" placeholder="Husk du skal...">
+                        <button onclick="addPersonalTodo('sigrid')"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="personal-todos" id="sigridTodos"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Board Section -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-project-diagram"></i>
+                <span>Projekt Opgaver</span>
+            </div>
+            <div class="board">
+                <div class="column todo">
+                    <div class="column-header">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h2>To Do</h2>
+                        <span class="count" id="todoCount">0</span>
+                    </div>
+                    <div class="task-list" id="todoList"></div>
+                </div>
+
+                <div class="column in-progress">
+                    <div class="column-header">
+                        <i class="fas fa-bolt"></i>
+                        <h2>Igangværende</h2>
+                        <span class="count" id="inProgressCount">0</span>
+                    </div>
+                    <div class="task-list" id="inProgressList"></div>
+                </div>
+
+                <div class="column done">
+                    <div class="column-header">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Færdig</h2>
+                        <span class="count" id="doneCount">0</span>
+                    </div>
+                    <div class="task-list" id="doneList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="section">
+            <div class="activity-section">
+                <h3><i class="fas fa-history"></i> Aktivitetslog</h3>
+                <div class="activity-log" id="activityLog"></div>
+            </div>
+        </div>
+
+        <!-- Guide -->
+        <div class="section">
+            <div class="guide-section">
+                <h3><i class="fas fa-book-open"></i> Hurtig Guide</h3>
+                <div class="guide-content">
+                    <p><strong>🤖 Jue's Opgaver:</strong> Ting jeg skal lave for jer. Opret opgaver i input feltet eller på Telegram med <code>"lav en rapport om X"</code></p>
+                    <p><strong>👤 Mathias' Huskeliste:</strong> Ting du skal huske. Skriv på Telegram med <code>"husk at købe mælk"</code></p>
+                    <p><strong>👩 Sigrid's Huskeliste:</strong> Ting Sigrid skal huske. Skriver på Telegram med <code>"husk at..."</code> (systemet kender hvem der skriver)</p>
+                    <p><strong>📋 Projekt Opgaver:</strong> Fælles projekter og opgaver. Se overblik over hvem der laver hvad.</p>
+                    <p><strong>💬 Telegram Kommandoer:</strong></p>
+                    <ul>
+                        <li><code>"husk [besked]"</code> → Tilføj til din huskeliste</li>
+                        <li><code>"lav [opgave]"</code> → Tilføj til mine opgaver</li>
+                        <li><code>"status"</code> → Se dashboard status</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                const [tasksRes, activityRes, infoRes, personalRes] = await Promise.all([
+                    fetch('/api/tasks'),
+                    fetch('/api/activity'),
+                    fetch('/api/info'),
+                    fetch('/api/personal-todos')
+                ]);
+
+                const tasks = await tasksRes.json();
+                const activity = await activityRes.json();
+                const info = await infoRes.json();
+                const personal = await personalRes.json();
+
+                renderBoard(tasks);
+                renderActivity(activity);
+                renderPersonalTodos(personal);
+                updateInfo(info);
+                updateHeaderStats(tasks, personal);
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function renderBoard(tasks) {
+            renderColumn('todo', tasks.todo);
+            renderColumn('inProgress', tasks['in-progress']);
+            renderColumn('done', tasks.done);
+        }
+
+        function renderColumn(type, taskList) {
+            const listEl = document.getElementById(`${type}List`);
+            const countEl = document.getElementById(`${type}Count`);
+
+            countEl.textContent = taskList.length;
+
+            if (taskList.length === 0) {
+                listEl.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>Ingen opgaver</div>';
+                return;
+            }
+
+            listEl.innerHTML = taskList.map(task => `
+                <div class="task">
+                    <div class="title">${escapeHtml(task.title)}</div>
+                    <div class="meta">
+                        <span class="assignee"><i class="fas fa-user"></i> ${escapeHtml(task.assignee)}</span>
+                        ${task.priority ? `<span class="priority ${task.priority}">${task.priority}</span>` : ''}
+                        ${task.completed ? `<span class="time"><i class="fas fa-clock"></i> ${formatTime(task.completed)}</span>` : ''}
+                        ${task.updated && !task.completed ? `<span class="time"><i class="fas fa-clock"></i> ${formatTime(task.updated)}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPersonalTodos(personal) {
+            renderPersonalTodosList('jue', personal.jue || []);
+            renderPersonalTodosList('mathias', personal.mathias || []);
+            renderPersonalTodosList('sigrid', personal.sigrid || []);
+        }
+
+        function renderPersonalTodosList(person, todos) {
+            const listEl = document.getElementById(`${person}Todos`);
+            const countEl = document.getElementById(`${person}Count`);
+
+            const activeTodos = todos.filter(t => !t.completed);
+            countEl.textContent = activeTodos.length;
+
+            if (todos.length === 0) {
+                listEl.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>Ingen opgaver</div>';
+                return;
+            }
+
+            listEl.innerHTML = todos.map(todo => `
+                <div class="personal-todo ${todo.completed ? 'completed' : ''}" onclick="togglePersonalTodo(${todo.id}, '${person}')">
+                    <div class="checkbox">
+                        ${todo.completed ? '<i class="fas fa-check"></i>' : ''}
+                    </div>
+                    <div class="todo-text">${escapeHtml(todo.text)}</div>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deletePersonalTodo(${todo.id}, '${person}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function addPersonalTodo(person) {
+            const inputEl = document.getElementById(`${person}Input`);
+            const text = inputEl.value.trim();
+
+            if (!text) return;
+
+            try {
+                const response = await fetch('/api/personal-todos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ person, text })
+                });
+
+                if (response.ok) {
+                    inputEl.value = '';
+                    loadData();
+                }
+            } catch (error) {
+                console.error('Error adding todo:', error);
+            }
+        }
+
+        async function togglePersonalTodo(id, person) {
+            const todo = await getPersonalTodo(id, person);
+            if (!todo) return;
+
+            try {
+                await fetch(`/api/personal-todos/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ completed: !todo.completed })
+                });
+                loadData();
+            } catch (error) {
+                console.error('Error toggling todo:', error);
+            }
+        }
+
+        async function deletePersonalTodo(id, person) {
+            try {
+                await fetch(`/api/personal-todos/${id}`, {
+                    method: 'DELETE'
+                });
+                loadData();
+            } catch (error) {
+                console.error('Error deleting todo:', error);
+            }
+        }
+
+        async function getPersonalTodo(id, person) {
+            const response = await fetch('/api/personal-todos');
+            const data = await response.json();
+            return data[person]?.find(t => t.id === id);
+        }
+
+        function updateHeaderStats(tasks, personal) {
+            const statsEl = document.getElementById('headerStats');
+            const mathiasTodos = personal.mathias?.filter(t => !t.completed).length || 0;
+            const sigridTodos = personal.sigrid?.filter(t => !t.completed).length || 0;
+            const jueTodos = personal.jue?.filter(t => !t.completed).length || 0;
+
+            statsEl.innerHTML = `
+                <div class="stat todo"><i class="fas fa-clipboard-list"></i> ${tasks.todo.length} To Do</div>
+                <div class="stat in-progress"><i class="fas fa-bolt"></i> ${tasks['in-progress'].length} Igang</div>
+                <div class="stat done"><i class="fas fa-check-circle"></i> ${tasks.done.length} Færdig</div>
+                <div class="stat jue"><i class="fas fa-robot"></i> ${jueTodos} Mine</div>
+                <div class="stat mathias"><i class="fas fa-user"></i> ${mathiasTodos} Mathias</div>
+                <div class="stat sigrid"><i class="fas fa-user-tie"></i> ${sigridTodos} Sigrid</div>
+            `;
+        }
+
+        function renderActivity(activity) {
+            const logEl = document.getElementById('activityLog');
+
+            if (activity.length === 0) {
+                logEl.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>Ingen aktivitet endnu</div>';
+                return;
+            }
+
+            logEl.innerHTML = activity.slice(-15).reverse().map(item => `
+                <div class="activity-item">
+                    <div class="activity-time">${formatTime(item.timestamp)}</div>
+                    <div class="activity-content">${escapeHtml(item.message)}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateInfo(info) {
+            const el = document.getElementById('lastUpdated');
+            if (info.lastUpdated) {
+                el.textContent = `Senest opdateret: ${formatTime(info.lastUpdated)}`;
+            }
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return 'Lige nu';
+            if (diff < 3600000) return `${Math.floor(diff/60000)} min siden`;
+            if (diff < 86400000) return `${Math.floor(diff/3600000)}t siden`;
+            if (diff < 604800000) return `${Math.floor(diff/86400000)}d siden`;
+            return date.toLocaleDateString('da-DK', { day: 'numeric', month: 'short' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Enter key support for inputs
+        document.getElementById('jueInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addPersonalTodo('jue');
+        });
+
+        document.getElementById('mathiasInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addPersonalTodo('mathias');
+        });
+
+        document.getElementById('sigridInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addPersonalTodo('sigrid');
+        });
+
+        // Initial load and refresh
+        loadData();
+        setInterval(loadData, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Automator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #050510;
+            --bg-secondary: #0a0a14;
+            --bg-tertiary: #12121f;
+            --bg-card: #1a1a2e;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+            --accent-pink: #f472b6;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-subtle: rgba(255,255,255,0.05);
+            --border-medium: rgba(255,255,255,0.1);
+            --gradient-mesh-1: rgba(167, 139, 250, 0.12);
+            --gradient-mesh-2: rgba(34, 211, 238, 0.08);
+            --gradient-mesh-3: rgba(244, 114, 182, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .font-display {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        /* Rich gradient mesh background */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 100% 60% at 10% 30%, var(--gradient-mesh-1) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 50% at 90% 20%, var(--gradient-mesh-2) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 40% 80%, var(--gradient-mesh-3) 0%, transparent 50%),
+                linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating decorative elements */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 1;
+            animation: float-orb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-purple);
+            top: -100px;
+            right: -100px;
+            opacity: 0.15;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-cyan);
+            bottom: -50px;
+            left: -50px;
+            opacity: 0.12;
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-pink);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            animation-delay: -14s;
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(20px, -15px) scale(1.05); }
+            50% { transform: translate(-10px, 25px) scale(0.95); }
+            75% { transform: translate(15px, 10px) scale(1.02); }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .glass-strong {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid var(--border-medium);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-purple);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-slide-up {
+            animation: slideInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .animate-slide-in-scale {
+            animation: slideInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .animate-pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .animate-shimmer {
+            background: linear-gradient(90deg, transparent 0%, rgba(167, 139, 250, 0.2) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+        }
+
+        /* Button styles with premium feel */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #8b5cf6 100%);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 24px rgba(167, 139, 250, 0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 16px rgba(167, 139, 250, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-medium);
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--border-medium);
+            transform: translateY(-1px);
+        }
+
+        /* Card styling */
+        .card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(18, 18, 31, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-medium), transparent);
+            opacity: 0.5;
+        }
+
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05) inset;
+        }
+
+        /* Input styling */
+        .input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.1), inset 0 1px 0 rgba(0,0,0,0.3);
+            background: var(--bg-deep);
+        }
+
+        .input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        select.input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a1a1aa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 20h14'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+            padding-right: 48px;
+            cursor: pointer;
+        }
+
+        /* Badge styling */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-active {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+        }
+
+        .badge-inactive {
+            background: rgba(161, 161, 170, 0.1);
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-medium);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 95%;
+            max-height: 92vh;
+            overflow-y: auto;
+            transform: scale(0.92) translateY(40px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Loader */
+        .loader-ring {
+            width: 56px;
+            height: 56px;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .modal {
+                padding: 24px;
+                border-radius: 20px;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="bg-mesh"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+
+    <!-- Main content -->
+    <div class="relative z-10 min-h-screen">
+        <!-- Header -->
+        <header class="glass sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center animate-pulse shadow-2xl">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-display text-2xl font-bold text-white tracking-tight">Workflow Automator</h1>
+                        <p class="text-sm text-zinc-400 mt-0.5">Automate everything</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+                        <span id="statsTotal" class="text-zinc-300">
+                            <span class="font-display text-lg text-white">0</span> workflows
+                        </span>
+                        <span id="statsActive" class="text-green-400">
+                            <span class="font-display text-lg">0</span> active
+                        </span>
+                    </div>
+                    <button id="createWorkflowBtn" class="btn-primary">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            <span>New Workflow</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="max-w-7xl mx-auto px-6 py-10">
+            <!-- Search & filter section -->
+            <div class="card mb-8 animate-slide-up">
+                <div class="flex gap-4 flex-col lg:flex-row">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="input pl-12"
+                                placeholder="Search workflows by name or description..."
+                            >
+                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                        </div>
+                    </div>
+                    <select id="filterSelect" class="input lg:w-56">
+                        <option value="all">All Workflows</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Workflow grid -->
+            <div id="workflowGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- Loading state -->
+                <div id="loadingState" class="col-span-full flex flex-col items-center justify-center py-32">
+                    <div class="loader-ring mb-6"></div>
+                    <p class="text-zinc-400 text-lg">Loading workflows...</p>
+                </div>
+
+                <!-- Empty state -->
+                <div id="emptyState" class="col-span-full hidden text-center py-32">
+                    <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 flex items-center justify-center animate-fade-in">
+                        <i class="fas fa-wand-magic-sparkles text-5xl text-purple-400/40"></i>
+                    </div>
+                    <h2 class="font-display text-3xl font-bold text-white mb-4 animate-slide-up" style="animation-delay: 0.1s;">No workflows yet</h2>
+                    <p class="text-zinc-400 text-lg mb-8 max-w-md mx-auto animate-fade-in" style="animation-delay: 0.2s;">Create your first automation workflow and watch the magic happen</p>
+                    <button onclick="openModal()" class="btn-primary animate-fade-in" style="animation-delay: 0.3s;">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <i class="fas fa-sparkles"></i>
+                            <span>Create Your First Workflow</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Create/Edit modal -->
+        <div id="workflowModal" class="modal-overlay">
+            <div class="modal animate-slide-in-scale">
+                <div class="flex items-start justify-between mb-8">
+                    <div>
+                        <h2 class="font-display text-3xl font-bold text-white mb-2" id="modalTitle">Create New Workflow</h2>
+                        <p class="text-zinc-400">Configure your automation workflow</p>
+                    </div>
+                    <button onclick="closeModal()" class="w-12 h-12 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-all">
+                        <i class="fas fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <form id="workflowForm" class="space-y-8">
+                    <input type="hidden" id="workflowId">
+
+                    <!-- Basic info -->
+                    <div class="card">
+                        <h3 class="font-display text-lg font-semibold text-white mb-6">Workflow Details</h3>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Workflow Name</label>
+                                <input
+                                    type="text"
+                                    id="workflowName"
+                                    class="input"
+                                    placeholder="e.g., Daily Sales Report"
+                                    required
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Description</label>
+                                <textarea
+                                    id="workflowDescription"
+                                    class="input"
+                                    rows="4"
+                                    placeholder="Describe what this workflow does..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trigger configuration -->
+                    <div class="card">
+                        <h3 class="font-display text-lg font-semibold text-white mb-6 flex items-center gap-3">
+                            <i class="fas fa-play-circle text-purple-400"></i>
+                            Trigger Configuration
+                        </h3>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Trigger Type</label>
+                                <select id="triggerType" class="input">
+                                    <option value="email">📧 Email Received</option>
+                                    <option value="webhook">🔗 Incoming Webhook</option>
+                                    <option value="schedule">⏰ Schedule</option>
+                                </select>
+                            </div>
+                            <div id="triggerConfig" class="space-y-4"></div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-display text-lg font-semibold text-white flex items-center gap-3">
+                                <i class="fas fa-list-check text-cyan-400"></i>
+                                Workflow Actions
+                            </h3>
+                            <button
+                                type="button"
+                                onclick="addAction()"
+                                class="btn-secondary text-sm"
+                            >
+                                <i class="fas fa-plus mr-2"></i>Add Action
+                            </button>
+                        </div>
+                        <div id="actionsList" class="space-y-5">
+                            <div id="noActions" class="text-center py-12 text-zinc-500">
+                                <i class="fas fa-inbox text-3xl mb-4 opacity-50"></i>
+                                <p>No actions configured yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual flow -->
+                    <div class="card">
+                        <h3 class="font-display text-lg font-semibold text-white mb-6 flex items-center gap-3">
+                            <i class="fas fa-project-diagram text-pink-400"></i>
+                            Visual Flow
+                        </h3>
+                        <div id="visualFlow" class="flex flex-wrap items-center gap-4 text-sm">
+                            <span class="text-zinc-500 italic">Configure trigger and actions to see the visual flow</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-end gap-4 pt-6 border-t border-white/5">
+                        <button type="button" onclick="closeModal()" class="btn-secondary">
+                            <i class="fas fa-times mr-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <span class="relative z-10 flex items-center gap-2">
+                                <i class="fas fa-save"></i>
+                                <span>Save Workflow</span>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = 'http://147.79.102.93:3000/api/workflows';
+
+        // State management
+        let workflows = [];
+        let editingWorkflow = null;
+        let actionCounter = 0;
+
+        // DOM element references
+        const elements = {
+            workflowGrid: document.getElementById('workflowGrid'),
+            loadingState: document.getElementById('loadingState'),
+            emptyState: document.getElementById('emptyState'),
+            searchInput: document.getElementById('searchInput'),
+            filterSelect: document.getElementById('filterSelect'),
+            createBtn: document.getElementById('createWorkflowBtn'),
+            modal: document.getElementById('workflowModal'),
+            modalTitle: document.getElementById('modalTitle'),
+            workflowForm: document.getElementById('workflowForm'),
+            workflowId: document.getElementById('workflowId'),
+            workflowName: document.getElementById('workflowName'),
+            workflowDescription: document.getElementById('workflowDescription'),
+            triggerType: document.getElementById('triggerType'),
+            triggerConfig: document.getElementById('triggerConfig'),
+            actionsList: document.getElementById('actionsList'),
+            visualFlow: document.getElementById('visualFlow'),
+            noActions: document.getElementById('noActions'),
+            statsTotal: document.getElementById('statsTotal'),
+            statsActive: document.getElementById('statsActive')
+        };
+
+        // Fetch all workflows
+        async function loadWorkflows() {
+            try {
+                const response = await fetch(API_BASE);
+                const data = await response.json();
+                workflows = data.workflows || [];
+                
+                renderWorkflows();
+                updateStats();
+            } catch (error) {
+                console.error('Failed to load workflows:', error);
+                elements.loadingState.innerHTML = `
+                    <div class="col-span-full text-center py-32">
+                        <i class="fas fa-exclamation-circle text-5xl text-red-400 mb-6"></i>
+                        <p class="text-zinc-400 text-lg">Failed to load workflows</p>
+                        <button onclick="loadWorkflows()" class="btn-secondary mt-4">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Render workflow cards
+        function renderWorkflows() {
+            const searchTerm = elements.searchInput.value.toLowerCase();
+            const filter = elements.filterSelect.value;
+
+            const filtered = workflows.filter(wf => {
+                const matchesSearch = wf.name.toLowerCase().includes(searchTerm) ||
+                                    wf.description?.toLowerCase().includes(searchTerm);
+                const matchesFilter = filter === 'all' ||
+                                     (filter === 'active' && wf.status === 'active') ||
+                                     (filter === 'inactive' && wf.status === 'inactive');
+                return matchesSearch && matchesFilter;
+            });
+
+            elements.loadingState.classList.add('hidden');
+
+            if (filtered.length === 0) {
+                elements.emptyState.classList.remove('hidden');
+                elements.workflowGrid.innerHTML = '';
+                elements.workflowGrid.appendChild(elements.emptyState);
+            } else {
+                elements.emptyState.classList.add('hidden');
+                elements.workflowGrid.innerHTML = filtered.map((wf, index) => `
+                    <div class="card animate-slide-up" style="animation-delay: ${index * 0.08}s;">
+                        <div class="flex items-start justify-between mb-5">
+                            <div>
+                                <h3 class="font-display text-xl font-semibold text-white mb-2">${escapeHtml(wf.name)}</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed">${escapeHtml(wf.description || 'No description provided')}</p>
+                            </div>
+                            <span class="badge ${wf.status === 'active' ? 'badge-active' : 'badge-inactive'}">
+                                ${wf.status}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-6 text-sm text-zinc-500 mb-5">
+                            <span class="flex items-center gap-2">
+                                <i class="fas fa-play text-purple-400"></i>
+                                ${wf.executions || 0} executions
+                            </span>
+                            ${wf.lastRun ? `
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-clock text-cyan-400"></i>
+                                    ${formatDate(wf.lastRun)}
+                                </span>
+                            ` : ''}
+                        </div>
+
+                        <div class="flex gap-3">
+                            <button onclick="editWorkflow('${wf.id}')" class="btn-secondary text-sm px-6 py-3">
+                                <i class="fas fa-pen-to-square mr-2"></i>Edit
+                            </button>
+                            <button onclick="runWorkflow('${wf.id}')" class="btn-primary text-sm px-6 py-3">
+                                <span class="relative z-10 flex items-center gap-2">
+                                    <i class="fas fa-play"></i>
+                                    <span>Run</span>
+                                </span>
+                            </button>
+                            <button onclick="deleteWorkflow('${wf.id}')" class="w-12 h-12 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 flex items-center justify-center transition-all">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = workflows.length;
+            const active = workflows.filter(wf => w.status === 'active').length;
+
+            elements.statsTotal.innerHTML = `<span class="font-display text-lg text-white">${total}</span> workflow${total !== 1 ? 's' : ''}`;
+            elements.statsActive.innerHTML = `<span class="font-display text-lg">${active}</span> active`;
+        }
+
+        // Modal management
+        function openModal() {
+            elements.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            elements.modal.classList.remove('active');
+            document.body.style.overflow = '';
+            elements.workflowForm.reset();
+            editingWorkflow = null;
+            elements.modalTitle.textContent = 'Create New Workflow';
+            elements.workflowId.value = '';
+            elements.actionsList.innerHTML = '';
+            elements.noActions.classList.remove('hidden');
+            actionCounter = 0;
+            updateTriggerConfig();
+            updateVisualFlow();
+        }
+
+        // Update trigger configuration based on type
+        function updateTriggerConfig() {
+            const type = elements.triggerType.value;
+            let configHtml = '';
+
+            switch(type) {
+                case 'email':
+                    configHtml = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Sender Filter</label>
+                                <input
+                                    type="email"
+                                    name="sender"
+                                    class="input"
+                                    placeholder="john@example.com"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Mailbox</label>
+                                <input
+                                    type="email"
+                                    name="emailAddress"
+                                    class="input"
+                                    placeholder="inbox@example.com"
+                                >
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'webhook':
+                    configHtml = `
+                        <div>
+                            <label class="block text-sm font-semibold text-zinc-300 mb-3">Webhook URL</label>
+                            <input
+                                type="url"
+                                name="webhookUrl"
+                                class="input"
+                                placeholder="https://example.com/webhook"
+                            >
+                        </div>
+                    `;
+                    break;
+                case 'schedule':
+                    configHtml = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Interval (minutes)</label>
+                                <input
+                                    type="number"
+                                    name="intervalMinutes"
+                                    class="input"
+                                    min="1"
+                                    value="60"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-zinc-300 mb-3">Timezone</label>
+                                <input
+                                    type="text"
+                                    name="timezone"
+                                    class="input"
+                                    placeholder="UTC"
+                                    value="UTC"
+                                >
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            elements.triggerConfig.innerHTML = configHtml;
+            updateVisualFlow();
+        }
+
+        // Add a new action
+        function addAction() {
+            actionCounter++;
+            elements.noActions.classList.add('hidden');
+
+            const actionHtml = `
+                <div id="action-${actionCounter}" class="card border border-purple-500/20 animate-slide-up">
+                    <div class="flex items-start justify-between mb-5">
+                        <select name="actionType" class="input" onchange="updateVisualFlow()">
+                            <option value="send_email">📧 Send Email</option>
+                            <option value="slack_message">💬 Slack Message</option>
+                            <option value="http_webhook">🔗 HTTP Webhook</option>
+                        </select>
+                        <button type="button" onclick="removeAction('action-${actionCounter}')" class="w-10 h-10 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 flex items-center justify-center transition-all">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-zinc-300 mb-3">
+                                <span class="action-field-label" data-action-field="send_email,slack_message">Message Body</span>
+                                <span class="action-field-label" data-action-field="http_webhook">JSON Payload</span>
+                            </label>
+                            <textarea
+                                name="body"
+                                class="input"
+                                rows="4"
+                                placeholder="Enter your message or JSON payload..."
+                                onchange="updateVisualFlow()"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            elements.actionsList.insertAdjacentHTML('beforeend', actionHtml);
+            updateVisualFlow();
+        }
+
+        // Remove an action
+        function removeAction(actionId) {
+            const actionEl = document.getElementById(actionId);
+            if (actionEl) {
+                actionEl.remove();
+                
+                if (elements.actionsList.querySelectorAll('[id^="action-"]').length === 0) {
+                    elements.noActions.classList.remove('hidden');
+                }
+                
+                updateVisualFlow();
+            }
+        }
+
+        // Update visual flow diagram
+        function updateVisualFlow() {
+            const trigger = elements.triggerType.value;
+            const actions = elements.actionsList.querySelectorAll('[id^="action-"]');
+            const triggerLabel = {
+                email: '📧 Email Received',
+                webhook: '🔗 Webhook',
+                schedule: '⏰ Schedule'
+            }[trigger];
+
+            let flowHtml = `
+                <span class="badge badge-active flex items-center gap-2">
+                    ${triggerLabel}
+                </span>
+                <i class="fas fa-arrow-right text-zinc-500"></i>
+            `;
+
+            actions.forEach((action, index) => {
+                const actionType = action.querySelector('[name="actionType"]')?.value;
+                const actionLabel = {
+                    send_email: '📧 Send Email',
+                    slack_message: '💬 Slack Message',
+                    http_webhook: '🔗 HTTP Webhook'
+                }[actionType] || '📋 Action';
+
+                flowHtml += `
+                    <span class="badge badge-inactive">${actionLabel}</span>
+                    ${index < actions.length - 1 ? '<i class="fas fa-arrow-right text-zinc-500"></i>' : ''}
+                `;
+            });
+
+            elements.visualFlow.innerHTML = flowHtml;
+        }
+
+        // Save workflow (create or update)
+        async function saveWorkflow(e) {
+            e.preventDefault();
+
+            const workflowData = {
+                name: elements.workflowName.value,
+                description: elements.workflowDescription.value,
+                trigger: {
+                    type: elements.triggerType.value,
+                    config: getTriggerConfig()
+                },
+                actions: getActions(),
+                status: 'inactive'
+            };
+
+            try {
+                const url = editingWorkflow ? `${API_BASE}/${editingWorkflow.id}` : API_BASE;
+                const method = editingWorkflow ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(workflowData)
+                });
+
+                if (response.ok) {
+                    closeModal();
+                    await loadWorkflows();
+                } else {
+                    alert('Failed to save workflow. Please try again.');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Failed to save workflow. Please try again.');
+            }
+        }
+
+        // Get trigger config from form
+        function getTriggerConfig() {
+            const config = {};
+            elements.triggerConfig.querySelectorAll('input').forEach(input => {
+                config[input.name] = input.value;
+            });
+            return config;
+        }
+
+        // Get actions from form
+        function getActions() {
+            const actions = [];
+            elements.actionsList.querySelectorAll('[id^="action-"]').forEach(actionEl => {
+                const type = actionEl.querySelector('[name="actionType"]')?.value;
+                const body = actionEl.querySelector('[name="body"]')?.value;
+
+                if (type && body) {
+                    actions.push({
+                        id: `action-${Date.now()}-${Math.random()}`,
+                        type,
+                        config: { body }
+                    });
+                }
+            });
+            return actions;
+        }
+
+        // Edit existing workflow
+        async function editWorkflow(id) {
+            const workflow = workflows.find(wf => wf.id === id);
+            if (!workflow) return;
+
+            editingWorkflow = workflow;
+            elements.modalTitle.textContent = 'Edit Workflow';
+            elements.workflowId.value = id;
+            elements.workflowName.value = workflow.name;
+            elements.workflowDescription.value = workflow.description || '';
+            elements.triggerType.value = workflow.trigger.type;
+
+            updateTriggerConfig();
+            loadTriggerConfig(workflow.trigger.config);
+
+            // Load actions
+            elements.actionsList.innerHTML = '';
+            elements.noActions.classList.add('hidden');
+            
+            workflow.actions?.forEach((action, index) => {
+                setTimeout(() => {
+                    actionCounter++;
+                    const actionHtml = `
+                        <div id="action-${actionCounter}" class="card border border-purple-500/20 animate-slide-up">
+                            <div class="flex items-start justify-between mb-5">
+                                <select name="actionType" class="input" onchange="updateVisualFlow()">
+                                    <option value="send_email" ${action.type === 'send_email' ? 'selected' : ''}>📧 Send Email</option>
+                                    <option value="slack_message" ${action.type === 'slack_message' ? 'selected' : ''}>💬 Slack Message</option>
+                                    <option value="http_webhook" ${action.type === 'http_webhook' ? 'selected' : ''}>🔗 HTTP Webhook</option>
+                                </select>
+                                <button type="button" onclick="removeAction('action-${actionCounter}')" class="w-10 h-10 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 flex items-center justify-center transition-all">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-semibold text-zinc-300 mb-3">
+                                        <span class="action-field-label" data-action-field="send_email,slack_message">Message Body</span>
+                                        <span class="action-field-label" data-action-field="http_webhook">JSON Payload</span>
+                                    </label>
+                                    <textarea
+                                        name="body"
+                                        class="input"
+                                        rows="4"
+                                        placeholder="Enter your message or JSON payload..."
+                                        onchange="updateVisualFlow()"
+                                    >${escapeHtml(action.config?.body || '')}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    elements.actionsList.insertAdjacentHTML('beforeend', actionHtml);
+                }, index * 50);
+            });
+
+            setTimeout(() => updateVisualFlow(), (workflow.actions?.length || 0) * 50 + 100);
+            openModal();
+        }
+
+        // Load trigger config values
+        function loadTriggerConfig(config) {
+            Object.keys(config || {}).forEach(key => {
+                const input = elements.triggerConfig.querySelector(`[name="${key}"]`);
+                if (input && config[key]) {
+                    input.value = config[key];
+                }
+            });
+        }
+
+        // Run workflow
+        async function runWorkflow(id) {
+            try {
+                const response = await fetch(`${API_BASE}/${id}/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (response.ok) {
+                    alert('✅ Workflow execution started!');
+                    await loadWorkflows();
+                } else {
+                    alert('Failed to start workflow execution');
+                }
+            } catch (error) {
+                console.error('Run error:', error);
+                alert('Failed to start workflow execution');
+            }
+        }
+
+        // Delete workflow
+        async function deleteWorkflow(id) {
+            if (!confirm('Are you sure you want to delete this workflow? This action cannot be undone.')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+
+                if (response.ok) {
+                    await loadWorkflows();
+                } else {
+                    alert('Failed to delete workflow');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('Failed to delete workflow');
+            }
+        }
+
+        // Utility functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+            if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+            if (diff < 604800000) return `${Math.floor(diff/86400000)}d ago`;
+            return date.toLocaleDateString('da-DK', { day: 'numeric', month: 'short' });
+        }
+
+        // Event listeners
+        elements.createBtn.addEventListener('click', openModal);
+        elements.triggerType.addEventListener('change', updateTriggerConfig);
+        elements.searchInput.addEventListener('input', renderWorkflows);
+        elements.filterSelect.addEventListener('change', renderWorkflows);
+        elements.workflowForm.addEventListener('submit', saveWorkflow);
+
+        // Initialize
+        loadWorkflows();
+    </script>
+</body>
+</html>

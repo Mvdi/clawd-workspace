@@ -1,0 +1,30 @@
+# Cron Jobs - Automated Tasks for Jue 🧙‍♂️
+# Format: min hour day month weekday command
+# Timezone: UTC (DK time = UTC + 1, UTC + 2 in summer)
+
+# === Daily Tasks ===
+
+# 06:00 UTC (07:00 DK) - AI Trends Research on X/Twitter
+0 6 * * * /root/clawd/scripts/research-ai-trends.sh
+
+# 07:00 UTC (08:00 DK) - Daily Insight (send to Telegram)
+0 7 * * * /root/clawd/scripts/daily-insight.sh
+
+# 08:00 UTC (09:00 DK) - Task Suggestions (send to Telegram)
+0 8 * * * /root/clawd/scripts/task-suggestions.sh
+
+# 21:00 UTC (22:00 DK) - Auto-commit & Push to GitHub
+0 21 * * * /root/clawd/scripts/auto-commit.sh
+
+# === Weekly Tasks ===
+
+# 09:00 UTC (10:00 DK) - AI Tool & Competitor Tracker (Tuesday & Friday)
+0 9 * * 2,5 /root/clawd/scripts/ai-tracker.sh
+
+# 02:00 UTC (03:00 DK) - Weekly Maintenance (Sunday)
+0 2 * * 0 /root/clawd/scripts/weekly-maintenance.sh
+
+# === Hourly Tasks ===
+
+# Hver time - Backup memory (recent files er vigtige!)
+0 * * * * cp -r /root/clawd/memory /root/backups/memory-hourly/$(date +\%Y\%m\%d-\%H\%M)

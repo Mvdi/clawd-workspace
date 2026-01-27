@@ -1,0 +1,2 @@
+# Dashboard Cleanup - kører hver time
+0 * * * * /root/clawd/dashboard/cleanup.sh >> /root/clawd/dashboard/cleanup.log 2>&1

@@ -1,0 +1,154 @@
+{
+  "todo": [
+    {
+      "id": 15,
+      "title": "Fikse VibeCoder repo - 47+ kritiske issues (prioriteret efter LLM beslut)",
+      "assignee": "Mathias",
+      "created": "2026-01-26T21:00:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 16,
+      "title": "Analysere og vælge bedste LLM til vores VPS (Llama, Qwen, Mistral vs z.ai/glm-4.7)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:05:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 17,
+      "title": "Installere Ollama på VPS til gratis, lokale LLM inferens",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:10:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 18,
+      "title": "Opdatere Workflow Automator dashboard med Todo integration (API + UI)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:20:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 19,
+      "title": "Deploye Workflow Automator til Vercel (kræver: Vercel CLI eller deploy-agent skill)",
+      "assignee": "Mathias",
+      "created": "2026-01-26T21:25:00Z",
+      "priority": "høj"
+    }
+  ],
+  "in-progress": [],
+  "done": [
+    {
+      "id": 1,
+      "title": "Undersøg awesome-clawdbot-skills repo - fundet 14+ high-priority skills",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:00:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 2,
+      "title": "Analyserede 4 SaaS idéer med pain, evidence, market size, competition, risks",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:00:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 3,
+      "title": "Pi & OpenCode coding agents - undersøg muligheder for workflow automator",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:00:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 4,
+      "title": "Installeret 7 high-priority skills: github, conventional-commits, deploy-agent, browser-use, exa, vercel, frontend-design",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:25:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 5,
+      "title": "Bygget Workflow Automator MVP med Pi (WorkflowDashboard, PricingPage, AI service, backend)",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:30:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 6,
+      "title": "Færdiggjorde Workflow Automator manuelt (WorkflowDashboard.tsx, PricingPage.tsx, App.tsx opdateret)",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:30:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 7,
+      "title": "Commit og push Workflow Automator til GitHub (https://github.com/Mvdi/workflow-automator)",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:30:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 8,
+      "title": "Oprette Todo API i backend (/api/todos med CRUD operations)",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:30:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 9,
+      "title": "Oprette Todo Service (read/write til todos.json)",
+      "assignee": "Jue",
+      "created": "2026-01-26T20:30:00Z",
+      "completed": "2026-01-26T20:30:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 10,
+      "title": "Oprette Todo UI komponent (TodoPage med filtre, create, edit, delete, toggle)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:00:00Z",
+      "completed": "2026-01-26T21:00:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 11,
+      "title": "Opdatere App.tsx routing (tilføjet /todos route)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:00:00Z",
+      "completed": "2026-01-26T21:10:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 12,
+      "title": "Commit alt og git push til GitHub (Todo integration færdig)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:20:00Z",
+      "completed": "2026-01-26T21:25:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 13,
+      "title": "Dashboard opdateret med Todo integration (backend API + frontend UI)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:20:00Z",
+      "completed": "2026-01-26T21:25:00Z",
+      "priority": "høj"
+    },
+    {
+      "id": 14,
+      "title": "Lokal LLM plan: Ollama på VPS (Gemma 2B hurtigst, Qwen balanceret, Mistral 7B god kvalitet)",
+      "assignee": "Jue",
+      "created": "2026-01-26T21:30:00Z",
+      "completed": "2026-01-26T21:25:00Z",
+      "priority": "høj"
+    }
+  ]
+}
