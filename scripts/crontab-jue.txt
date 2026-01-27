@@ -4,16 +4,16 @@
 
 # === Daily Tasks ===
 
-# 06:00 UTC (07:00 DK) - AI Trends Research on X/Twitter
+# 06:00 UTC (07:00 DK) - AI Trends Research på X/Twitter
 0 6 * * * /root/clawd/scripts/research-ai-trends.sh
 
-# 07:00 UTC (08:00 DK) - Daily Insight (send to Telegram)
+# 07:00 UTC (08:00 DK) - Daily Insight
 0 7 * * * /root/clawd/scripts/daily-insight.sh
 
-# 08:00 UTC (09:00 DK) - Task Suggestions (send to Telegram)
+# 08:00 UTC (09:00 DK) - Task Suggestions
 0 8 * * * /root/clawd/scripts/task-suggestions.sh
 
-# 21:00 UTC (22:00 DK) - Auto-commit & Push to GitHub
+# 21:00 UTC (22:00 DK) - Auto-commit & Push
 0 21 * * * /root/clawd/scripts/auto-commit.sh
 
 # === Weekly Tasks ===
@@ -21,10 +21,19 @@
 # 09:00 UTC (10:00 DK) - AI Tool & Competitor Tracker (Tuesday & Friday)
 0 9 * * 2,5 /root/clawd/scripts/ai-tracker.sh
 
+# 10:00 UTC (11:00 DK) - Competitive Intelligence (Tuesday & Friday) 🆕
+0 10 * * 2,5 /root/clawd/scripts/competitive-intel.sh
+
+# 09:00 UTC (10:00 DK) - Trend-Based Idea Generator (Saturday) 🆕
+0 9 * * 6 /root/clawd/scripts/trend-ideas.sh
+
 # 02:00 UTC (03:00 DK) - Weekly Maintenance (Sunday)
 0 2 * * 0 /root/clawd/scripts/weekly-maintenance.sh
 
+# 20:00 UTC (21:00 DK) - What Did I Learn This Week? (Sunday) 🆕
+0 20 * * 0 /root/clawd/scripts/weekly-learnings.sh
+
 # === Hourly Tasks ===
 
-# Hver time - Backup memory (recent files er vigtige!)
+# Hver time - Backup memory
 0 * * * * cp -r /root/clawd/memory /root/backups/memory-hourly/$(date +\%Y\%m\%d-\%H\%M)
